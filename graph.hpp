@@ -1,6 +1,6 @@
 /**
    Copyright (C) 2016 Diego Rubert
-   
+
    This file is part of the O(k)-approximation algorithm implementation
    for the DCJ distance on linear unichromosomal genomes in:
 
@@ -11,12 +11,12 @@
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -42,6 +42,7 @@
 #include <iterator>
 #include <vector>
 
+
 /* Some forward-declaration */
 class Edge;
 class Vertex;
@@ -66,7 +67,7 @@ public:
 private:
   int id; /* The unique ID (not the family) of the gene this extremity represents */
   Type t; /* The type: tail, head or undefined (see enum above) */
-  
+
 public:
   /* Constructor that receives (optionally) the ID of the gene this extremity represents */
   Extremity(int id = 0, Type t = UNDEF) : id(id), t(t) {}
@@ -86,7 +87,7 @@ public:
   inline bool operator!=(const Extremity &other) const {
     return !(*this == other);
   }
-  
+
   /* Returns an extremity with inverse type */
   inline Extremity operator!() const {
     return Extremity(id, t == UNDEF ? UNDEF : (t == TAIL ? HEAD : TAIL));
@@ -113,7 +114,7 @@ private:
   Extremity ex1; /* Extremity of vertex where this edge is stored */
   Extremity ex2; /* Extremity of adjacent vertex to the one this edge is stored */
   Edge *sibling; /* Stores this edge's sibling (used on adjacency graph) */
-  
+
 public:
   /* Default constructor */
   Edge(Vertex *adj = 0x0, const char *label = 0x0);
@@ -129,13 +130,13 @@ public:
 
   /* Returns this edge, but the one stored in neighbor vertex  */
   Edge *getAdjRef(void) const;
-  
+
   /* Returns label */
   inline const char *getLabel(void) { return this->label; }
 
   /* Sets label */
   void setLabel(const char *label);
-  
+
   /* Sets its extremities */
   void setExtremities(int id1, Extremity::Type t1, int id2, Extremity::Type t2);
 
@@ -161,7 +162,7 @@ public:
 
   /* Returns true if this edge is incident to v */
   bool incident(Vertex *v);
-  
+
   /* Overload for comparing edge extremities alphabetically */
   inline bool operator<=(const Edge &other) const;
 
@@ -188,7 +189,7 @@ class Vertex {   /* To be used as an array */
   friend class Graph;
 
 public:
- 
+
 private:
   int id;                     /* Vertex id (should be equal to array index) */
   unsigned short degree;      /* Vertex degree, optional */
@@ -201,8 +202,8 @@ private:
                                  since we can't call delete to a void pointer */
   Extremity ex1;              /* Left extremity */
   Extremity ex2;              /* Right extremity */
-  
-public: 
+
+public:
   /* Default constructor */
   Vertex(int id = -1, char direction = 0, int family = 0);
 
@@ -230,7 +231,7 @@ public:
 
   /* Returns true if the vertex has some extremity equal to ex */
   bool hasExtremity(Extremity ex);
-  
+
   /* Returns the direction of the gene */
   inline char getDirection(void) const { return direction; }
 
@@ -250,7 +251,7 @@ public:
   inline void *getData(void) const { return data; }
 
   /* Sets the pointer to the arbitrary data */
-  inline void setData(void *data) { this->data = data; }  
+  inline void setData(void *data) { this->data = data; }
 
   /* Returns the vertex label */
   inline const char *getLabel(void) const { return this->label; }
@@ -260,10 +261,10 @@ public:
 
   /* Add an edge to this vertex (the caller must also add the edge to other endpoint) */
   Edge *addEdge(Vertex *adj, const char *label = 0x0);
-  
+
   /* Remove an edge from this vertex (the caller must also remove the edge from other endpoint) */
   void removeEdge(Edge *e);
-  
+
   /* Iterator (over vertices) class and associated methods */
   class iterator : public std::iterator<std::forward_iterator_tag, Edge>
   {
@@ -316,7 +317,7 @@ public:
   Graph (Graph &g);
 
   /* Destroy a graph, freeing all allocated memory */
-  ~Graph ();  
+  ~Graph ();
 
   /* Print a graph, use carefully with big graphs */
   void print();
@@ -329,7 +330,7 @@ public:
 
   /* Returns the greater vertex id */
   int getMaxVertexId(void);
-  
+
   /* Returns a pointer to vertex with id */
   Vertex *getVertex(int id);
 
@@ -341,7 +342,7 @@ public:
 
   /* Sets label */
   void setLabel(const char *label);
-  
+
   /* Add an edge, returning it (v1 to v2) if added or NULL */
   Edge *addEdge(int id1, int id2, const char *label = 0x0);
 
@@ -353,7 +354,7 @@ public:
 
   /* Remove edge with this extremities from graph (not so cheap) */
   void removeEdge(Extremity ex1, Extremity ex2);
-  
+
   /*
     Add to graph a vertex. The chosen id it the next not used
     (possibly lastVid + 1), part = 0 means NO SPECIFIC PART
@@ -379,7 +380,7 @@ public:
     endpoints and cross references
   */
   void removeVertex(int id);
-  
+
   /*
     Remove from graph a vertex, cleaning all it's data, edge
     endpoints and cross references
@@ -405,7 +406,7 @@ public:
     (Re)Sets family name
   */
   void setFamilyName(unsigned int family, const char *name);
-  
+
 
   /* Iterator (over vertices) class and associated methods */
   class iterator : public std::iterator<std::forward_iterator_tag, Vertex>
@@ -507,7 +508,7 @@ inline Graph::iterator::iterator(const iterator& i) :
 inline Graph::iterator& Graph::iterator::operator=(const iterator& i)
 {
   *this=i; // copy all contents
-  return *this; 
+  return *this;
 }
 
 inline Graph::iterator& Graph::iterator::operator++()
@@ -517,18 +518,18 @@ inline Graph::iterator& Graph::iterator::operator++()
         (part == -1 || part == g->vertices[cur]->part) &&
         (family == -1 || family == g->vertices[cur]->family) )
       break;
-  return *this; 
+  return *this;
 }
 
 inline Graph::iterator Graph::iterator::operator++(int)
-{ 
+{
   iterator tmp(*this);
   for (++cur; cur < g->maxn; ++cur)
     if (g->vertices[cur] != NULL &&
         (part == -1 || part == g->vertices[cur]->part) &&
         (family == -1 || family == g->vertices[cur]->family) )
       break;
-  return tmp; 
+  return tmp;
 }
 
 inline Vertex* Graph::iterator::operator*() const
@@ -549,7 +550,7 @@ inline bool Graph::iterator::operator==(const iterator& i) const
 inline bool Graph::iterator::operator!=(const iterator& i) const
 {
   return g != i.g || cur != i.cur; // part or family doesn't matter
-}	
+}
 
 
 /*************************************************
@@ -575,22 +576,22 @@ inline Vertex::iterator::iterator(const iterator& i) :
 {}
 
 inline Vertex::iterator& Vertex::iterator::operator=(const iterator& i)
-{ 
+{
   cur=i.cur;
-  return *this; 
+  return *this;
 }
 
 inline Vertex::iterator& Vertex::iterator::operator++()
 {
   cur = cur->next;
-  return *this; 
+  return *this;
 }
 
 inline Vertex::iterator Vertex::iterator::operator++(int)
-{ 
+{
   iterator tmp(*this);
   cur = cur->next;
-  return tmp; 
+  return tmp;
 }
 
 inline Edge* Vertex::iterator::operator*() const
@@ -605,13 +606,13 @@ inline Edge* Vertex::iterator::operator->() const
 
 inline bool Vertex::iterator::operator==(const iterator& i) const
 {
-  return cur == i.cur; 
+  return cur == i.cur;
 }
 
 inline bool Vertex::iterator::operator!=(const iterator& i) const
 {
-  return cur != i.cur; 
-}	
+  return cur != i.cur;
+}
 
 
 /*************************
@@ -630,9 +631,9 @@ inline bool Edge::operator<(const Edge &other) const
 {
   if (this == &other || this == other.getAdjRef())
     return true;
-  
+
   int e1[2] = {ex1.id, ex2.id}, e2[2] = {other.ex1.id, other.ex2.id};
-  
+
   if (e1[0] > e1[1]) {
     e1[0] = ex2.id;
     e1[1] = ex1.id;
@@ -641,13 +642,13 @@ inline bool Edge::operator<(const Edge &other) const
     e2[0] = other.ex2.id;
     e2[1] = other.ex1.id;
   }
-   
+
   // so we won't have problems with null adjacencies
   if (ex1.t ==  Extremity::UNDEF)
     return true;
   if (other.ex1.t ==  Extremity::UNDEF)
     return false;
-  
+
   if (e1[0] < e2[0])
     return true;
   else if (e1[0] > e2[0])
